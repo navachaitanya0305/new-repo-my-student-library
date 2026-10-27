@@ -31,6 +31,7 @@
     }
     :root[data-theme="dark"] { color-scheme: dark; }
     * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
     html { scroll-behavior: smooth; scroll-padding-top: 100px; }
     body {
       min-width: 320px;
@@ -282,21 +283,75 @@
     .resource-actions .button { min-height: 36px; padding-inline: 12px; font-size: 12px; }
     .resource-length { color: var(--muted); font-size: 10px; }
 
-    .profile-panel { display: grid; grid-template-columns: minmax(220px,.7fr) minmax(0,1.3fr); gap: 25px; padding: 25px; border: 1px solid var(--line); border-radius: 20px; background: var(--surface); box-shadow: var(--shadow); }
-    .profile-preview { display: flex; flex-direction: column; align-items: center; padding: 22px; border: 1px solid var(--line); border-radius: 16px; background: var(--bg); text-align: center; }
-    .profile-photo { display: grid; width: 116px; height: 116px; place-items: center; overflow: hidden; border: 4px solid var(--surface); border-radius: 50%; color: var(--black); background: var(--orange); box-shadow: 0 6px 18px rgba(21,21,21,.12); font-family: var(--heading); font-size: 36px; font-weight: 800; }
+    .profile-dashboard { display: grid; gap: 18px; }
+    .profile-hero { position: relative; display: grid; grid-template-columns: auto minmax(0,1fr) auto; align-items: center; gap: 22px; padding: 27px; border: 1px solid var(--line); border-radius: 22px; background: var(--surface); box-shadow: var(--shadow); }
+    .profile-photo { display: grid; width: 124px; height: 124px; place-items: center; overflow: hidden; border: 5px solid var(--surface); border-radius: 50%; color: var(--black); background: var(--orange); box-shadow: 0 6px 18px rgba(21,21,21,.12); font-family: var(--heading); font-size: 36px; font-weight: 800; }
     .profile-photo img { width: 100%; height: 100%; object-fit: cover; }
-    .profile-preview h3 { margin: 15px 0 3px; font-family: var(--heading); font-size: 21px; font-weight: 700; }
-    .profile-preview p { margin: 0; color: var(--muted); font-size: 12px; }
-    .profile-upload { position: relative; margin-top: 15px; }
+    .profile-hero h3 { margin: 0 0 5px; font-family: var(--heading); font-size: clamp(24px,4vw,34px); font-weight: 800; letter-spacing: -.04em; }
+    .profile-hero-copy { min-width: 0; }
+    .profile-subtitle { margin: 0; color: var(--muted); font-size: 14px; }
+    .profile-actions { display: flex; flex-wrap: wrap; gap: 9px; }
+    .profile-upload { position: relative; }
     .profile-upload input { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); clip-path: inset(50%); }
+    .profile-upload:focus-within { outline: 3px solid rgba(255,121,0,.35); outline-offset: 3px; }
+    .profile-remove-photo { margin-top: 8px; padding: 4px; border: 0; color: var(--muted); background: transparent; font-size: 11px; text-decoration: underline; cursor: pointer; }
+    .profile-completion { width: min(250px,100%); margin-top: 16px; }
+    .completion-label { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 6px; color: var(--muted); font-size: 11px; font-weight: 700; }
+    .completion-track { height: 8px; overflow: hidden; border-radius: 99px; background: var(--line); }
+    .completion-fill { width: 0; height: 100%; border-radius: inherit; background: var(--orange); transition: width .25s ease; }
+    .profile-tabs { display: flex; overflow-x: auto; gap: 5px; padding: 6px; border: 1px solid var(--line); border-radius: 15px; background: var(--surface); scrollbar-width: thin; }
+    .profile-tab { flex: 0 0 auto; min-height: 41px; padding: 9px 15px; border: 0; border-radius: 10px; color: var(--muted); background: transparent; font: 700 12px var(--body); cursor: pointer; }
+    .profile-tab[aria-selected="true"] { color: var(--black); background: var(--orange); }
+    .profile-tab:focus-visible, .profile-remove-photo:focus-visible { outline: 3px solid rgba(255,121,0,.45); outline-offset: 2px; }
+    .profile-panel { display: block; min-width: 0; padding: 24px; border: 1px solid var(--line); border-radius: 20px; background: var(--surface); box-shadow: var(--shadow); }
+    .profile-panel[hidden] { display: none; }
+    .profile-panel h3 { margin: 0 0 5px; font-family: var(--heading); font-size: 21px; font-weight: 750; letter-spacing: -.025em; }
+    .profile-panel-intro { margin: 0 0 18px; color: var(--muted); font-size: 12px; }
     .profile-form { display: grid; align-content: start; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 13px; }
-    .profile-form label { display: grid; gap: 5px; color: var(--muted); font-size: 11px; font-weight: 700; }
+    .profile-form[hidden] { display: none; }
+    .profile-form label, .dashboard-form label { display: grid; gap: 6px; color: var(--muted); font-size: 11px; font-weight: 700; }
     .profile-form .full { grid-column: 1/-1; }
-    .profile-form input, .profile-form select { width: 100%; min-height: 43px; padding: 9px 11px; border: 1px solid var(--line); border-radius: 10px; color: var(--ink); background: var(--surface); font-size: 13px; }
-    .profile-form .save-row { display: flex; grid-column: 1/-1; align-items: center; gap: 12px; }
-    .profile-message { margin: 0; color: #28714b; font-size: 11px; font-weight: 600; }
+    .profile-form input, .profile-form select, .profile-form textarea, .dashboard-form input, .dashboard-form select, .dashboard-form textarea { width: 100%; min-height: 43px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; color: var(--ink); background: var(--surface); font: 13px var(--body); }
+    .profile-form textarea, .dashboard-form textarea { min-height: 92px; resize: vertical; }
+    .profile-form input:focus, .profile-form select:focus, .profile-form textarea:focus, .dashboard-form input:focus, .dashboard-form select:focus, .dashboard-form textarea:focus { outline: 3px solid rgba(255,121,0,.2); border-color: var(--orange); }
+    .profile-form .save-row { display: flex; grid-column: 1/-1; align-items: center; flex-wrap: wrap; gap: 10px; }
+    .profile-message { min-height: 16px; margin: 0; color: #28714b; font-size: 11px; font-weight: 600; }
     .profile-message.error { color: #b42318; }
+    .dashboard-stats { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; margin-bottom: 20px; }
+    .dashboard-stat { display: flex; min-height: 105px; align-items: center; gap: 13px; padding: 16px; border: 1px solid var(--line); border-radius: 15px; background: var(--bg); }
+    .dashboard-stat-icon { display: grid; width: 42px; height: 42px; flex: 0 0 auto; place-items: center; border-radius: 13px; color: var(--black); background: var(--soft-orange); font-size: 18px; }
+    .dashboard-stat strong { display: block; font-family: var(--heading); font-size: 24px; line-height: 1.1; }
+    .dashboard-stat span { display: block; margin-top: 4px; color: var(--muted); font-size: 11px; }
+    .dashboard-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 15px; }
+    .dashboard-card { min-width: 0; padding: 19px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); }
+    .dashboard-card h4 { margin: 0 0 5px; font-family: var(--heading); font-size: 16px; }
+    .dashboard-card > p { margin: 0; color: var(--muted); font-size: 11px; }
+    .dashboard-list { display: grid; gap: 9px; margin: 14px 0 0; padding: 0; list-style: none; }
+    .dashboard-list li { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding-top: 9px; border-top: 1px solid var(--line); font-size: 12px; }
+    .dashboard-list small { display: block; margin-top: 3px; color: var(--muted); font-size: 10px; }
+    .dashboard-empty { margin-top: 12px !important; padding: 13px; border: 1px dashed var(--line); border-radius: 11px; color: var(--muted); background: var(--bg); font-size: 11px !important; }
+    .dashboard-empty[hidden] { display: none; }
+    .week-chart { display: grid; height: 130px; grid-template-columns: repeat(7,minmax(0,1fr)); align-items: end; gap: 7px; margin-top: 14px; padding: 8px 0 0; border-bottom: 1px solid var(--line); }
+    .week-day { display: flex; min-width: 0; height: 100%; flex-direction: column; align-items: center; justify-content: flex-end; gap: 4px; color: var(--muted); font-size: 9px; }
+    .week-day strong { color: var(--ink); font-size: 10px; }
+    .week-bar-track { display: flex; width: min(22px,80%); height: 74px; align-items: flex-end; overflow: hidden; border-radius: 6px 6px 2px 2px; background: var(--bg); }
+    .week-bar { display: block; width: 100%; border-radius: 6px 6px 2px 2px; background: var(--orange); }
+    .dashboard-action { padding: 3px; border: 0; color: #a64b00; background: transparent; font: 700 11px var(--body); cursor: pointer; }
+    .dashboard-form { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); align-items: end; gap: 11px; margin-top: 17px; }
+    .dashboard-form .form-wide { grid-column: 1/-1; }
+    .dashboard-form .button { min-height: 43px; }
+    .portfolio-links { display: flex; flex-wrap: wrap; gap: 9px; margin: 12px 0; }
+    .portfolio-link { display: inline-flex; min-height: 36px; align-items: center; padding: 7px 11px; border: 1px solid var(--line); border-radius: 9px; color: var(--ink); font-size: 11px; font-weight: 700; text-decoration: none; }
+    .portfolio-link:hover { border-color: var(--orange); color: #a64b00; }
+    .privacy-note { margin: 14px 0 0; padding: 12px 14px; border-radius: 11px; color: var(--muted); background: var(--bg); font-size: 11px; line-height: 1.6; }
+    .id-card { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 15px; margin-top: 17px; padding: 17px; border: 1px solid var(--line); border-left: 5px solid var(--orange); border-radius: 14px; background: var(--bg); }
+    .id-card-avatar { display: grid; width: 54px; height: 54px; overflow: hidden; place-items: center; border-radius: 50%; color: var(--black); background: var(--orange); font-family: var(--heading); font-weight: 800; }
+    .id-card-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .id-card strong { display: block; font-family: var(--heading); font-size: 15px; }
+    .id-card span { display: block; margin-top: 3px; color: var(--muted); font-size: 10px; }
+    .privacy-toggle { display: flex !important; grid-template-columns: auto 1fr; align-items: center; gap: 10px !important; margin-top: 13px; cursor: pointer; }
+    .privacy-toggle input { width: 18px; min-height: 18px; accent-color: var(--orange); }
+    .file-input { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); clip-path: inset(50%); white-space: nowrap; }
     .theme-row { display: flex; flex-wrap: wrap; gap: 8px; }
     .theme-choice { min-height: 36px; padding: 6px 12px; border: 1px solid var(--line); border-radius: 99px; color: var(--muted); background: var(--surface); font-size: 11px; font-weight: 600; cursor: pointer; }
     .theme-choice[aria-pressed="true"] { border-color: var(--orange); color: var(--black); background: var(--orange); }
@@ -327,6 +382,9 @@
       .book-grid { grid-template-columns: repeat(3,minmax(0,1fr)); }
       .resource-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
       .nav a { padding-inline: 8px; }
+      .profile-hero { grid-template-columns: auto minmax(0,1fr); gap: 16px; }
+      .profile-actions { grid-column: 1/-1; }
+      .dashboard-stats { grid-template-columns: repeat(2,minmax(0,1fr)); }
     }
     @media (max-width: 760px) {
       html { scroll-padding-top: 82px; }
@@ -363,6 +421,12 @@
       .book-stack { transform: translate(-50%,-50%) rotate(-7deg) scale(.72); }
       .hero-badge { right: 0; bottom: -2%; }
       .book-grid, .resource-grid { grid-template-columns: 1fr; }
+      .profile-hero { grid-template-columns: 1fr; justify-items: center; padding: 21px; text-align: center; }
+      .profile-hero-copy { text-align: center; }
+      .profile-actions { grid-column: auto; justify-content: center; }
+      .profile-completion { margin-inline: auto; }
+      .profile-panel { padding: 17px; }
+      .dashboard-stats, .dashboard-grid { grid-template-columns: 1fr; }
       .book-card { display: grid; grid-template-columns: 82px minmax(0,1fr); column-gap: 13px; padding: 13px; }
       .book-card-top { display: contents; }
       .book-cover { grid-row: 1 / span 5; width: 78px; height: 110px; }
@@ -375,6 +439,10 @@
       .profile-form { grid-template-columns: 1fr; }
       .profile-form .full, .profile-form .save-row { grid-column: auto; }
       .profile-form .save-row { align-items: flex-start; flex-direction: column; }
+      .dashboard-form { grid-template-columns: 1fr; }
+      .dashboard-form .form-wide { grid-column: auto; }
+      .profile-tabs { margin-inline: -2px; }
+      .profile-tab { padding-inline: 12px; }
       .footer-links { gap: 10px 14px; }
       .modal { padding: 23px 18px; }
     }
@@ -485,27 +553,123 @@
 
     <section class="section" id="profile" aria-labelledby="profile-title">
       <div class="section-heading">
-        <div><div class="section-kicker">Your learning space</div><h2 id="profile-title">Student profile</h2><p>Update your details and add a photo. Your profile is saved in this browser.</p></div>
+        <div><div class="section-kicker">Your learning space</div><h2 id="profile-title">Student dashboard</h2><p>Your profile and learning resources, saved locally in this browser.</p></div>
       </div>
-      <div class="profile-panel">
-        <aside class="profile-preview" aria-label="Profile preview">
-          <div class="profile-photo" id="profile-photo">S</div>
-          <label class="button secondary profile-upload" for="profile-photo-file">↑ Upload photo
-            <input id="profile-photo-file" type="file" accept="image/jpeg,image/png,image/webp">
-          </label>
-          <p style="margin:8px 0 0;color:var(--muted);font-size:10px">JPG, PNG, or WebP · up to 1 MB</p>
-          <h3 id="profile-preview-name">Your name</h3>
-          <p id="profile-preview-program">Student · Data Science</p>
-        </aside>
-        <form class="profile-form" id="profile-form">
-          <label for="profile-name">Full name<input id="profile-name" type="text" autocomplete="name" maxlength="70" placeholder="Enter your name" required></label>
-          <label for="profile-id">Student ID<input id="profile-id" type="text" maxlength="24" placeholder="e.g. DS-2026-014"></label>
-          <label for="profile-email">College email<input id="profile-email" type="email" autocomplete="email" maxlength="120" placeholder="you@college.edu"></label>
-          <label for="profile-year">Year of study<select id="profile-year"><option>1st year</option><option>2nd year</option><option>3rd year</option><option>4th year</option><option>Postgraduate</option></select></label>
-          <label class="full" for="profile-program">Programme<input id="profile-program" type="text" maxlength="70" placeholder="e.g. B.Tech Data Science"></label>
-          <div class="save-row"><button class="button" type="submit">Save profile</button><p class="profile-message" id="profile-message" aria-live="polite"></p></div>
-          <div class="full"><label style="margin-bottom:8px">Appearance</label><div class="theme-row" role="group" aria-label="Appearance theme"><button class="theme-choice" type="button" data-theme-choice="light" aria-pressed="false">Light</button><button class="theme-choice" type="button" data-theme-choice="dark" aria-pressed="false">Dark</button><button class="theme-choice" type="button" data-theme-choice="system" aria-pressed="false">System</button></div></div>
-        </form>
+      <div class="profile-dashboard">
+        <header class="profile-hero">
+          <div class="profile-photo" id="profile-photo" aria-label="Student profile photo">S</div>
+          <div class="profile-hero-copy">
+            <h3 id="profile-preview-name">Your name</h3>
+            <p class="profile-subtitle" id="profile-preview-program">Student · Programme not set</p>
+            <div class="profile-completion" aria-label="Profile completion">
+              <div class="completion-label"><span>Profile completion</span><span id="profile-completion-value">0%</span></div>
+              <div class="completion-track" id="profile-completion-track" role="progressbar" aria-label="Profile completion" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="completion-fill" id="profile-completion-fill"></div></div>
+            </div>
+          </div>
+          <div class="profile-actions">
+            <button class="button" type="button" id="edit-profile-button">Edit profile</button>
+            <label class="button secondary profile-upload" for="profile-photo-file"><span id="photo-action-label">Upload photo</span>
+              <input class="file-input" id="profile-photo-file" type="file" accept="image/jpeg,image/png,image/webp" aria-label="Upload or change profile photo">
+            </label>
+            <button class="button secondary" type="button" id="remove-profile-photo" hidden>Remove photo</button>
+          </div>
+        </header>
+        <p class="profile-message" id="dashboard-message" aria-live="polite"></p>
+        <nav class="profile-tabs" role="tablist" aria-label="Student dashboard sections">
+          <button class="profile-tab" type="button" role="tab" id="tab-overview" aria-controls="panel-overview" aria-selected="true" tabindex="0" data-profile-tab="overview">Overview</button>
+          <button class="profile-tab" type="button" role="tab" id="tab-academic" aria-controls="panel-academic" aria-selected="false" tabindex="-1" data-profile-tab="academic">Academic details</button>
+          <button class="profile-tab" type="button" role="tab" id="tab-library" aria-controls="panel-library" aria-selected="false" tabindex="-1" data-profile-tab="library">My library</button>
+          <button class="profile-tab" type="button" role="tab" id="tab-achievements" aria-controls="panel-achievements" aria-selected="false" tabindex="-1" data-profile-tab="achievements">Portfolio &amp; achievements</button>
+          <button class="profile-tab" type="button" role="tab" id="tab-settings" aria-controls="panel-settings" aria-selected="false" tabindex="-1" data-profile-tab="settings">Settings</button>
+        </nav>
+        <section class="profile-panel" id="panel-overview" role="tabpanel" aria-labelledby="tab-overview">
+          <div id="profile-overview-content">
+            <div class="dashboard-stats" aria-label="Student library counts">
+              <article class="dashboard-stat"><span class="dashboard-stat-icon" aria-hidden="true">▤</span><div><strong id="dashboard-books-count">0</strong><span>Books in catalog</span></div></article>
+              <article class="dashboard-stat"><span class="dashboard-stat-icon" aria-hidden="true">▧</span><div><strong id="dashboard-notes-count">0</strong><span>Study notes</span></div></article>
+              <article class="dashboard-stat"><span class="dashboard-stat-icon" aria-hidden="true">▣</span><div><strong id="dashboard-pdfs-count">0</strong><span>Your uploaded PDFs</span></div></article>
+              <article class="dashboard-stat"><span class="dashboard-stat-icon" aria-hidden="true">☆</span><div><strong id="dashboard-bookmarks-count">0</strong><span>Bookmarks</span></div></article>
+              <article class="dashboard-stat"><span class="dashboard-stat-icon" aria-hidden="true">↗</span><div><strong id="dashboard-progress-count">Not tracked</strong><span>Learning progress</span></div></article>
+              <article class="dashboard-stat"><span class="dashboard-stat-icon" aria-hidden="true">✦</span><div><strong id="dashboard-achievements-count">0</strong><span>Achievements added</span></div></article>
+            </div>
+            <div class="dashboard-grid">
+              <article class="dashboard-card"><h4>Recent activity</h4><p>Activity recorded on this device.</p><ul class="dashboard-list" id="recent-activity-list"></ul><p class="dashboard-empty" id="recent-activity-empty">No recent activity yet. Open a study note or explore a book to start your history.</p></article>
+              <article class="dashboard-card"><h4>Weekly study activity</h4><p>Study notes opened in the last seven days.</p><div id="weekly-progress-chart" aria-label="Weekly study activity chart"></div><p class="dashboard-empty" id="weekly-progress-empty">No study activity to chart yet. Your real note opens will appear here.</p></article>
+            </div>
+          </div>
+          <form class="profile-form" id="profile-form" hidden>
+            <label for="profile-name">Full name<input id="profile-name" type="text" autocomplete="name" maxlength="70" placeholder="Enter your name" required></label>
+            <label for="profile-email">College email<input id="profile-email" type="email" autocomplete="email" maxlength="120" placeholder="you@college.edu"></label>
+            <label for="profile-id">College ID<input id="profile-id" type="text" maxlength="24" placeholder="College ID (private by default)"></label>
+            <label for="profile-college">College name<input id="profile-college" type="text" maxlength="100" placeholder="Your college"></label>
+            <label for="profile-department">Department<input id="profile-department" type="text" maxlength="80" placeholder="Your department"></label>
+            <label for="profile-program">Programme / course<input id="profile-program" type="text" maxlength="70" placeholder="e.g. B.Tech Data Science"></label>
+            <label for="profile-year">Year of study<select id="profile-year"><option value="">Select year</option><option>1st year</option><option>2nd year</option><option>3rd year</option><option>4th year</option><option>Postgraduate</option></select></label>
+            <label for="profile-semester">Semester<input id="profile-semester" type="text" maxlength="30" placeholder="e.g. Semester 4"></label>
+            <label for="profile-faculty">Faculty name<input id="profile-faculty" type="text" maxlength="80" placeholder="Faculty or advisor"></label>
+            <label class="full" for="profile-bio">Short bio<textarea id="profile-bio" maxlength="500" placeholder="A little about your learning goals"></textarea></label>
+            <label class="full" for="profile-skills">Skills, comma-separated<input id="profile-skills" type="text" maxlength="300" placeholder="Python, data visualisation"></label>
+            <label class="full" for="profile-interests">Interests, comma-separated<input id="profile-interests" type="text" maxlength="300" placeholder="Machine learning, statistics"></label>
+            <div class="save-row">
+              <button class="button" type="submit" id="save-profile-button">Save changes</button>
+              <button class="button secondary" type="button" id="cancel-profile-edit">Cancel</button>
+              <p class="profile-message" id="profile-message" aria-live="polite"></p>
+            </div>
+          </form>
+        </section>
+        <section class="profile-panel" id="panel-academic" role="tabpanel" aria-labelledby="tab-academic" hidden>
+          <h3>Academic details</h3><p class="profile-panel-intro">Your academic information is kept in this browser and is private by default.</p>
+          <div class="dashboard-grid">
+            <article class="dashboard-card"><h4>College &amp; course</h4><ul class="dashboard-list" id="academic-details-list"></ul></article>
+            <article class="dashboard-card"><h4>Student ID card</h4><p>This on-device card does not replace an official college ID.</p><div class="id-card"><div class="id-card-avatar" id="id-card-avatar">S</div><div><strong id="id-card-name">Your name</strong><span id="id-card-college">College not set</span><span id="id-card-program">Programme not set</span><span id="id-card-student-id">ID hidden</span></div></div><label class="privacy-toggle"><input type="checkbox" id="show-student-id"><span>Show my college ID on this card</span></label></article>
+          </div>
+          <p class="privacy-note">College ID, email, photo, and other personal details stay in this browser's local storage. This static site has no login, backend, or secure account sync. Do not use shared devices for sensitive information.</p>
+        </section>
+        <section class="profile-panel" id="panel-library" role="tabpanel" aria-labelledby="tab-library" hidden>
+          <h3>My library</h3><p class="profile-panel-intro">Explore the existing catalog and notes. Counts reflect this site's actual content and your saved items.</p>
+          <div class="dashboard-stats">
+            <article class="dashboard-stat"><span class="dashboard-stat-icon" aria-hidden="true">▤</span><div><strong id="library-books-count">0</strong><span>Available catalog books</span></div></article>
+            <article class="dashboard-stat"><span class="dashboard-stat-icon" aria-hidden="true">▧</span><div><strong id="library-notes-count">0</strong><span>Available study notes</span></div></article>
+            <article class="dashboard-stat"><span class="dashboard-stat-icon" aria-hidden="true">☆</span><div><strong id="library-bookmarks-count">0</strong><span>Your bookmarks</span></div></article>
+          </div>
+          <div class="dashboard-grid">
+            <article class="dashboard-card"><h4>Your uploaded PDFs</h4><p>PDF files stored locally in this browser (1 MB maximum per file).</p><ul class="dashboard-list" id="pdf-list"></ul><p class="dashboard-empty" id="pdf-empty">No PDFs uploaded yet.</p><form class="dashboard-form" id="pdf-upload-form"><label class="form-wide" for="pdf-upload-input">Choose PDF files<input id="pdf-upload-input" type="file" accept="application/pdf" multiple></label><button class="button" type="submit">Add PDFs</button><p class="profile-message form-wide" id="pdf-message" aria-live="polite"></p></form></article>
+            <article class="dashboard-card"><h4>Learning progress</h4><p>Your weekly activity is based on actual study notes opened—not estimated completion.</p><div id="library-weekly-chart" aria-label="Weekly study activity chart"></div><p class="dashboard-empty" id="library-weekly-empty">No study note activity recorded yet.</p><a class="dashboard-action" href="#resources">Browse study notes →</a></article>
+          </div>
+          <p class="privacy-note">Catalog books and notes are available resources; the site does not currently track checkouts or course completion.</p>
+        </section>
+        <section class="profile-panel" id="panel-achievements" role="tabpanel" aria-labelledby="tab-achievements" hidden>
+          <h3>Portfolio &amp; achievements</h3><p class="profile-panel-intro">Build a personal portfolio saved on this device. These entries are not published or shared.</p>
+          <div class="portfolio-links" id="portfolio-links"></div>
+          <form class="dashboard-form" id="portfolio-links-form">
+            <label for="profile-github">GitHub profile URL<input id="profile-github" type="url" maxlength="200" placeholder="https://github.com/username"></label>
+            <label for="profile-linkedin">LinkedIn profile URL<input id="profile-linkedin" type="url" maxlength="200" placeholder="https://linkedin.com/in/username"></label>
+            <div class="save-row"><button class="button secondary" type="submit">Save profile links</button><p class="profile-message" id="portfolio-links-message" aria-live="polite"></p></div>
+          </form>
+          <div class="dashboard-grid" style="margin-top:20px">
+            <article class="dashboard-card"><h4>Projects, certificates &amp; achievements</h4><ul class="dashboard-list" id="portfolio-list"></ul><p class="dashboard-empty" id="portfolio-empty">No portfolio items yet. Add a project, certificate, or achievement below.</p>
+              <form class="dashboard-form" id="portfolio-item-form">
+                <label for="portfolio-type">Item type<select id="portfolio-type"><option value="Project">Project</option><option value="Certificate">Certificate</option><option value="Achievement">Achievement</option></select></label>
+                <label for="portfolio-title">Title<input id="portfolio-title" type="text" maxlength="100" required placeholder="Item title"></label>
+                <label class="form-wide" for="portfolio-description">Description<input id="portfolio-description" type="text" maxlength="200" placeholder="Optional details"></label>
+                <label class="form-wide" for="portfolio-url">Link (optional)<input id="portfolio-url" type="url" maxlength="300" placeholder="https://"></label>
+                <button class="button" type="submit" id="portfolio-submit-button">Add portfolio item</button>
+                <button class="button secondary" type="button" id="portfolio-cancel-edit" hidden>Cancel edit</button>
+              </form>
+            </article>
+            <article class="dashboard-card"><h4>Resume</h4><p>Upload a resume for local download on this device only (PDF or DOCX, up to 2 MB).</p><p id="resume-status" class="dashboard-empty">No resume uploaded.</p><form class="dashboard-form" id="resume-form"><label class="form-wide" for="resume-input">Choose resume<input id="resume-input" type="file" accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"></label><button class="button" type="submit">Upload resume</button><button class="button secondary" type="button" id="remove-resume-button" hidden>Remove resume</button><p class="profile-message form-wide" id="resume-message" aria-live="polite"></p></form></article>
+          </div>
+        </section>
+        <section class="profile-panel" id="panel-settings" role="tabpanel" aria-labelledby="tab-settings" hidden>
+          <h3>Settings &amp; privacy</h3><p class="profile-panel-intro">Choose how your profile appears on this device. This preference does not publish profile data to the internet.</p>
+          <form id="privacy-form" class="dashboard-form">
+            <label class="form-wide" for="profile-visibility">Profile visibility<select id="profile-visibility"><option value="private">Private (recommended)</option><option value="device">Visible on this device only</option></select></label>
+            <p class="profile-panel-intro form-wide">There is no public profile feature or account backend. Your details remain browser-local regardless of this preference.</p>
+            <div class="form-wide"><h4>Appearance</h4><div class="theme-row" role="group" aria-label="Appearance theme"><button class="theme-choice" type="button" data-theme-choice="light" aria-pressed="false">Light</button><button class="theme-choice" type="button" data-theme-choice="dark" aria-pressed="false">Dark</button><button class="theme-choice" type="button" data-theme-choice="system" aria-pressed="false">System</button></div></div>
+            <div class="save-row"><button class="button" type="submit">Save preferences</button><p class="profile-message" id="privacy-message" aria-live="polite"></p></div>
+          </form>
+          <p class="privacy-note">Data is stored using this browser's local storage, not encrypted or synced. Clearing browser data removes your saved profile, portfolio, bookmarks, activity, and uploaded files. Avoid saving sensitive information on a shared device.</p>
+        </section>
       </div>
     </section>
   </main>
@@ -565,7 +729,11 @@
       var savedGrid = document.getElementById("saved-grid");
       var modal = document.getElementById("note-modal");
       var profilePhotoData = "";
-      var profileSaveTimer;
+      var profileData = {};
+      var profileEditSnapshot = null;
+      var editingPortfolioIndex = null;
+      var dashboardActivity = [];
+      var uploadedPdfs = [];
       var systemTheme = window.matchMedia("(prefers-color-scheme: dark)");
       var themePreference = "system";
       var toastTimer;
@@ -683,27 +851,69 @@
         document.getElementById("subject-count").textContent = categories.length - 1;
         document.getElementById("nav-saved-count").textContent = savedIds.size ? " (" + savedIds.size + ")" : "";
         var avatar = document.getElementById("nav-avatar");
-        avatar.innerHTML = profilePhotoData ? '<img src="' + profilePhotoData + '" alt="">' : escapeHTML(profileInitials(document.getElementById("profile-name").value));
+        setProfileImage(avatar, profilePhotoData, "", profileInitials(document.getElementById("profile-name").value));
+        renderDashboard();
       }
       function renderAll() { renderFilters(); renderBooks(); renderResources(); renderSaved(); renderStats(); }
       function profileInitials(name) {
         var parts = name.trim().split(/\s+/).filter(Boolean);
         return parts.length > 1 ? (parts[0][0] + parts[parts.length - 1][0]).toLocaleUpperCase() : (parts[0] || "S").slice(0,1).toLocaleUpperCase();
       }
+      function setProfileImage(container, data, alt, fallback) {
+        if (data) {
+          var image = document.createElement("img");
+          image.src = data;
+          image.alt = alt;
+          container.replaceChildren(image);
+        } else container.textContent = fallback;
+      }
       function updateProfilePreview() {
         var name = document.getElementById("profile-name").value.trim() || "Your name";
-        var program = document.getElementById("profile-program").value.trim() || "Data Science";
+        var program = document.getElementById("profile-program").value.trim() || "Programme not set";
         var year = document.getElementById("profile-year").value;
         var photo = document.getElementById("profile-photo");
-        if (profilePhotoData) {
-          var image = photo.querySelector("img") || document.createElement("img");
-          image.src = profilePhotoData;
-          image.alt = "Profile photo of " + name;
-          photo.replaceChildren(image);
-        } else photo.textContent = profileInitials(name);
+        setProfileImage(photo, profilePhotoData, "Profile photo of " + name, profileInitials(name));
         document.getElementById("profile-preview-name").textContent = name;
-        document.getElementById("profile-preview-program").textContent = year + " · " + program;
+        document.getElementById("profile-preview-program").textContent = [year, program].filter(Boolean).join(" · ") || "Student";
+        document.getElementById("remove-profile-photo").hidden = !profilePhotoData;
+        document.getElementById("photo-action-label").textContent = profilePhotoData ? "Change photo" : "Upload photo";
         renderStats();
+      }
+      function profileValuesFromForm() {
+        return {
+          name:document.getElementById("profile-name").value.trim(),
+          studentId:document.getElementById("profile-id").value.trim(),
+          email:document.getElementById("profile-email").value.trim(),
+          year:document.getElementById("profile-year").value,
+          program:document.getElementById("profile-program").value.trim(),
+          college:document.getElementById("profile-college").value.trim(),
+          department:document.getElementById("profile-department").value.trim(),
+          semester:document.getElementById("profile-semester").value.trim(),
+          facultyName:document.getElementById("profile-faculty").value.trim(),
+          bio:document.getElementById("profile-bio").value.trim(),
+          skills:document.getElementById("profile-skills").value.trim(),
+          interests:document.getElementById("profile-interests").value.trim(),
+          github:document.getElementById("profile-github").value.trim(),
+          linkedin:document.getElementById("profile-linkedin").value.trim(),
+          photo:profilePhotoData
+        };
+      }
+      function loadProfileFields(profile) {
+        document.getElementById("profile-name").value = typeof profile.name === "string" ? profile.name : "";
+        document.getElementById("profile-id").value = typeof profile.studentId === "string" ? profile.studentId : "";
+        document.getElementById("profile-email").value = typeof profile.email === "string" ? profile.email : "";
+        document.getElementById("profile-college").value = typeof profile.college === "string" ? profile.college : "";
+        document.getElementById("profile-department").value = typeof profile.department === "string" ? profile.department : "";
+        document.getElementById("profile-program").value = typeof profile.program === "string" ? profile.program : "";
+        document.getElementById("profile-year").value = typeof profile.year === "string" ? profile.year : "";
+        document.getElementById("profile-semester").value = typeof profile.semester === "string" ? profile.semester : "";
+        document.getElementById("profile-faculty").value = typeof profile.facultyName === "string" ? profile.facultyName : "";
+        document.getElementById("profile-bio").value = typeof profile.bio === "string" ? profile.bio : "";
+        document.getElementById("profile-skills").value = typeof profile.skills === "string" ? profile.skills : "";
+        document.getElementById("profile-interests").value = typeof profile.interests === "string" ? profile.interests : "";
+        document.getElementById("profile-github").value = typeof profile.github === "string" ? profile.github : "";
+        document.getElementById("profile-linkedin").value = typeof profile.linkedin === "string" ? profile.linkedin : "";
+        profilePhotoData = typeof profile.photo === "string" && /^data:image\/(?:jpeg|png|webp);base64,[A-Za-z0-9+/=]+$/.test(profile.photo) ? profile.photo : "";
       }
       function loadProfile() {
         try {
@@ -715,62 +925,193 @@
           }
           var profile = JSON.parse(stored || "null");
           if (profile && typeof profile === "object") {
-            document.getElementById("profile-name").value = typeof profile.name === "string" ? profile.name : "";
-            document.getElementById("profile-id").value = typeof profile.studentId === "string" ? profile.studentId : "";
-            document.getElementById("profile-email").value = typeof profile.email === "string" ? profile.email : "";
-            document.getElementById("profile-program").value = typeof profile.program === "string" ? profile.program : "";
-            if (typeof profile.year === "string") document.getElementById("profile-year").value = profile.year;
-            profilePhotoData = typeof profile.photo === "string" && profile.photo.indexOf("data:image/") === 0 ? profile.photo : "";
-            if (legacy) {
-              localStorage.setItem("msl-profile", JSON.stringify({
-                name: profile.name || "",
-                studentId: profile.studentId || "",
-                email: profile.email || "",
-                year: profile.year || "1st year",
-                program: profile.program || "",
-                photo: profile.photo || ""
-              }));
-            }
+            profileData = profile;
+            loadProfileFields(profileData);
+            if (legacy) localStorage.setItem("msl-profile", JSON.stringify(profileData));
           }
+          document.getElementById("show-student-id").checked = profileData.showStudentId === true;
+          document.getElementById("profile-visibility").value = profileData.visibility === "device" ? "device" : "private";
+          document.getElementById("show-student-id").checked = profileData.showStudentId === true;
         } catch (error) {
           console.error("Could not load the student profile.", error);
-          var message = document.getElementById("profile-message");
+          var message = document.getElementById("dashboard-message");
           message.textContent = "Could not restore your saved profile. Browser storage may be unavailable.";
           message.classList.add("error");
         }
+        try {
+          var activity = JSON.parse(localStorage.getItem("msl-activity") || "[]");
+          if (Array.isArray(activity)) dashboardActivity = activity.filter(function (item) { return item && typeof item.label === "string" && typeof item.date === "string"; }).slice(-50);
+        } catch (error) { console.error("Could not load student activity.", error); }
+        if (profileData.resume && (typeof profileData.resume.data !== "string" || !/^data:(?:application\/pdf|application\/vnd\.openxmlformats-officedocument\.wordprocessingml\.document);base64,[A-Za-z0-9+/=]+$/.test(profileData.resume.data))) delete profileData.resume;
+        try {
+          var pdfs = JSON.parse(localStorage.getItem("msl-pdfs") || "[]");
+          if (Array.isArray(pdfs)) uploadedPdfs = pdfs.filter(function (file) { return file && typeof file.name === "string" && typeof file.data === "string" && /^data:application\/pdf;base64,[A-Za-z0-9+/=]+$/.test(file.data); });
+        } catch (error) { console.error("Could not load uploaded PDFs.", error); }
+        if (!Array.isArray(profileData.portfolioItems)) profileData.portfolioItems = [];
         updateProfilePreview();
       }
       function saveProfile(showConfirmation) {
-        var profile = {
-          name:document.getElementById("profile-name").value.trim(),
-          studentId:document.getElementById("profile-id").value.trim(),
-          email:document.getElementById("profile-email").value.trim(),
-          year:document.getElementById("profile-year").value,
-          program:document.getElementById("profile-program").value.trim(),
-          photo:profilePhotoData
-        };
+        var profile = Object.assign({}, profileData, profileValuesFromForm(), {
+          showStudentId:document.getElementById("show-student-id").checked,
+          visibility:document.getElementById("profile-visibility").value
+        });
         try {
           localStorage.setItem("msl-profile", JSON.stringify(profile));
-          var message = document.getElementById("profile-message");
+          profileData = profile;
+          var message = document.getElementById(document.getElementById("profile-form").hidden ? "dashboard-message" : "profile-message");
           message.textContent = showConfirmation ? "Profile saved on this device." : "Changes saved on this device.";
           message.classList.remove("error");
-          if (showConfirmation) showToast("Your student profile was saved.");
+          if (showConfirmation) showToast("Your student profile was saved on this device.");
+          renderStats();
           return true;
         } catch (error) {
           console.error("Could not save the student profile.", error);
-          var message = document.getElementById("profile-message");
+          var message = document.getElementById(document.getElementById("profile-form").hidden ? "dashboard-message" : "profile-message");
           message.textContent = "Could not save your profile. Browser storage may be full or unavailable.";
           message.classList.add("error");
           return false;
         }
       }
-      function scheduleProfileSave() {
-        window.clearTimeout(profileSaveTimer);
-        profileSaveTimer = window.setTimeout(function () { saveProfile(false); }, 500);
+      function beginProfileEdit() {
+        profileEditSnapshot = { profile:Object.assign({}, profileData), photo:profilePhotoData };
+        document.getElementById("profile-overview-content").hidden = true;
+        document.getElementById("profile-form").hidden = false;
+        document.getElementById("edit-profile-button").hidden = true;
+        document.getElementById("profile-name").focus();
+      }
+      function cancelProfileEdit() {
+        if (profileEditSnapshot) {
+          profileData = profileEditSnapshot.profile;
+          loadProfileFields(profileData);
+          profilePhotoData = profileEditSnapshot.photo;
+          updateProfilePreview();
+        }
+        document.getElementById("profile-form").reset();
+        loadProfileFields(profileData);
+        document.getElementById("profile-form").hidden = true;
+        document.getElementById("profile-overview-content").hidden = false;
+        document.getElementById("edit-profile-button").hidden = false;
+        document.getElementById("profile-message").textContent = "";
+        profileEditSnapshot = null;
+      }
+      function safeExternalUrl(value) {
+        if (!value) return "";
+        try {
+          var url = new URL(value);
+          return url.protocol === "https:" || url.protocol === "http:" ? url.href : "";
+        } catch (error) { return ""; }
+      }
+      function recordActivity(label, kind) {
+        var entry = { label:label, kind:kind || "activity", date:new Date().toISOString() };
+        dashboardActivity.push(entry);
+        dashboardActivity = dashboardActivity.slice(-50);
+        try { localStorage.setItem("msl-activity", JSON.stringify(dashboardActivity)); }
+        catch (error) { console.error("Could not save student activity.", error); showToast("Activity could not be saved in this browser."); }
+        renderStats();
+      }
+      function renderDashboard() {
+        var name = document.getElementById("profile-name").value.trim() || "Your name";
+        var currentProfile = profileValuesFromForm();
+        var fields = [currentProfile.name, currentProfile.photo, currentProfile.college, profileData.studentId, currentProfile.email, currentProfile.department, currentProfile.program, currentProfile.year, currentProfile.semester, currentProfile.facultyName, currentProfile.bio, currentProfile.skills, currentProfile.interests, currentProfile.github, currentProfile.linkedin, profileData.resume && profileData.resume.data];
+        var completion = Math.round(fields.filter(function (value) { return Boolean(value); }).length * 100 / fields.length);
+        document.getElementById("profile-completion-value").textContent = completion + "%";
+        document.getElementById("profile-completion-fill").style.width = completion + "%";
+        document.getElementById("profile-completion-track").setAttribute("aria-valuenow", String(completion));
+        document.getElementById("dashboard-books-count").textContent = books.length;
+        document.getElementById("dashboard-notes-count").textContent = resources.length;
+        document.getElementById("dashboard-pdfs-count").textContent = uploadedPdfs.length;
+        document.getElementById("dashboard-bookmarks-count").textContent = savedIds.size;
+        document.getElementById("dashboard-achievements-count").textContent = (profileData.portfolioItems || []).filter(function (item) { return item.type === "Achievement"; }).length;
+        var weekData = [];
+        for (var dayOffset = 6; dayOffset >= 0; dayOffset--) {
+          var day = new Date();
+          day.setHours(0,0,0,0);
+          day.setDate(day.getDate() - dayOffset);
+          var dayKey = day.toDateString();
+          var total = dashboardActivity.filter(function (item) { return item.kind === "study-note" && new Date(item.date).toDateString() === dayKey; }).length;
+          weekData.push({ label:day.toLocaleDateString(undefined,{weekday:"short"}), count:total });
+        }
+        var weekTotal = weekData.reduce(function (sum, day) { return sum + day.count; }, 0);
+        var progressCount = document.getElementById("dashboard-progress-count");
+        progressCount.textContent = weekTotal ? String(weekTotal) : "Not tracked";
+        progressCount.nextElementSibling.textContent = weekTotal ? "study sessions this week" : "No study sessions yet";
+        var chartHTML = weekTotal ? '<div class="week-chart" role="img" aria-label="Weekly note opens: ' + weekData.map(function (day) { return escapeHTML(day.label) + " " + day.count; }).join(", ") + '">' + weekData.map(function (day) {
+          var height = day.count ? Math.max(12, Math.round(day.count * 100 / weekTotal)) : 3;
+          return '<div class="week-day"><span class="week-bar-track"><span class="week-bar" style="height:' + height + '%"></span></span><strong>' + day.count + '</strong><span>' + escapeHTML(day.label) + '</span></div>';
+        }).join("") + '</div>' : "";
+        document.getElementById("weekly-progress-chart").innerHTML = chartHTML;
+        document.getElementById("library-weekly-chart").innerHTML = chartHTML;
+        document.getElementById("weekly-progress-empty").hidden = Boolean(weekTotal);
+        document.getElementById("library-weekly-empty").hidden = Boolean(weekTotal);
+        document.getElementById("library-books-count").textContent = books.length;
+        document.getElementById("library-notes-count").textContent = resources.length;
+        document.getElementById("library-bookmarks-count").textContent = savedIds.size;
+        var recent = dashboardActivity.slice(-5).reverse();
+        document.getElementById("recent-activity-list").innerHTML = recent.map(function (item) {
+          return "<li><div>" + escapeHTML(item.label) + "<small>" + escapeHTML(new Date(item.date).toLocaleString()) + "</small></div></li>";
+        }).join("");
+        document.getElementById("recent-activity-empty").hidden = recent.length > 0;
+        var academicFields = [
+          ["College",currentProfile.college],["Department",currentProfile.department],["Programme",currentProfile.program],
+          ["Year",currentProfile.year],["Semester",currentProfile.semester],["Faculty",currentProfile.facultyName],["Email",currentProfile.email]
+        ];
+        document.getElementById("academic-details-list").innerHTML = academicFields.map(function (field) {
+          return "<li><span>" + escapeHTML(field[0]) + "</span><strong>" + escapeHTML(field[1] || "Not provided") + "</strong></li>";
+        }).join("");
+        document.getElementById("id-card-name").textContent = name;
+        document.getElementById("id-card-college").textContent = currentProfile.college || "College not set";
+        document.getElementById("id-card-program").textContent = [currentProfile.program,currentProfile.year,currentProfile.semester].filter(Boolean).join(" · ") || "Programme not set";
+        document.getElementById("id-card-student-id").textContent = profileData.studentId ? (document.getElementById("show-student-id").checked ? "ID: " + profileData.studentId : "ID: ••••••••") : "College ID not provided";
+        var idAvatar = document.getElementById("id-card-avatar");
+        setProfileImage(idAvatar, profilePhotoData, "", profileInitials(name));
+        var links = [];
+        [["GitHub",currentProfile.github],["LinkedIn",currentProfile.linkedin]].forEach(function (item) {
+          var url = safeExternalUrl(item[1]);
+          if (url) links.push('<a class="portfolio-link" href="' + escapeHTML(url) + '" target="_blank" rel="noopener noreferrer">' + escapeHTML(item[0]) + ' ↗</a>');
+        });
+        document.getElementById("portfolio-links").innerHTML = links.length ? links.join("") : '<span class="dashboard-empty">Add your GitHub or LinkedIn link below.</span>';
+        var portfolioItems = profileData.portfolioItems || [];
+        document.getElementById("portfolio-list").innerHTML = portfolioItems.map(function (item, index) {
+          var url = safeExternalUrl(item.url);
+          return "<li><div><strong>" + escapeHTML(item.title) + "</strong><small>" + escapeHTML(item.type) + (item.description ? " · " + escapeHTML(item.description) : "") + (url ? ' · <a href="' + escapeHTML(url) + '" target="_blank" rel="noopener noreferrer">Open link ↗</a>' : "") + '</small></div><span><button class="dashboard-action" type="button" data-edit-portfolio="' + index + '" aria-label="Edit ' + escapeHTML(item.title) + '">Edit</button><button class="dashboard-action" type="button" data-delete-portfolio="' + index + '" aria-label="Delete ' + escapeHTML(item.title) + '">Delete</button></span></li>';
+        }).join("");
+        document.getElementById("portfolio-empty").hidden = portfolioItems.length > 0;
+        document.getElementById("dashboard-achievements-count").textContent = portfolioItems.filter(function (item) { return item.type === "Achievement"; }).length;
+        var resumeStatus = document.getElementById("resume-status");
+        resumeStatus.replaceChildren();
+        if (profileData.resume && profileData.resume.data) {
+          var resumeLink = document.createElement("a");
+          resumeLink.className = "dashboard-action";
+          resumeLink.href = profileData.resume.data;
+          resumeLink.download = profileData.resume.name || "resume";
+          resumeLink.textContent = "Download " + (profileData.resume.name || "resume");
+          resumeStatus.appendChild(resumeLink);
+        } else resumeStatus.textContent = "No resume uploaded.";
+        document.getElementById("remove-resume-button").hidden = !(profileData.resume && profileData.resume.data);
+        var pdfList = document.getElementById("pdf-list");
+        pdfList.replaceChildren();
+        uploadedPdfs.forEach(function (file, index) {
+          var row = document.createElement("li");
+          var download = document.createElement("a");
+          download.className = "dashboard-action";
+          download.href = file.data;
+          download.download = file.name;
+          download.textContent = file.name + " · Download";
+          var remove = document.createElement("button");
+          remove.className = "dashboard-action";
+          remove.type = "button";
+          remove.dataset.deletePdf = String(index);
+          remove.setAttribute("aria-label", "Delete " + file.name);
+          remove.textContent = "Delete";
+          row.append(download, remove);
+          pdfList.appendChild(row);
+        });
+        document.getElementById("pdf-empty").hidden = uploadedPdfs.length > 0;
       }
       function openNote(id) {
         var resource = resources.find(function (item) { return item.id === id; });
         if (!resource) return;
+        recordActivity("Opened study note: " + resource.title, "study-note");
         state.activeNote = resource;
         document.getElementById("modal-kicker").textContent = resource.kind + " · " + resource.category;
         document.getElementById("modal-title").textContent = resource.title;
@@ -792,6 +1133,7 @@
       function openBookDetails(id) {
         var book = books.find(function (item) { return item.id === id; });
         if (!book) return;
+        recordActivity("Viewed book: " + book.title, "book");
         document.getElementById("modal-kicker").textContent = book.category + " · " + book.year;
         document.getElementById("modal-title").textContent = book.title;
         document.getElementById("modal-meta").textContent = "By " + book.author + " · Recommended reading";
@@ -840,14 +1182,70 @@
         var bookmark = event.target.closest("[data-bookmark]");
         if (bookmark) {
           var id = bookmark.dataset.bookmark;
+          var bookmarkItem = getItem(id);
           if (isSaved(id)) { savedIds.delete(id); showToast("Removed from bookmarks."); }
           else { savedIds.add(id); showToast("Saved to your bookmarks."); }
-          saveSaved(); renderAll(); return;
+          saveSaved(); renderAll();
+          if (bookmarkItem) recordActivity((isSaved(id) ? "Bookmarked: " : "Removed bookmark: ") + bookmarkItem.title, "bookmark");
+          return;
         }
         var open = event.target.closest("[data-open-note]");
         if (open) { openNote(open.dataset.openNote); return; }
         var details = event.target.closest("[data-book-details]");
         if (details) { openBookDetails(details.dataset.bookDetails); return; }
+        var editPortfolio = event.target.closest("[data-edit-portfolio]");
+        if (editPortfolio) {
+          editingPortfolioIndex = Number(editPortfolio.dataset.editPortfolio);
+          var editItem = (profileData.portfolioItems || [])[editingPortfolioIndex];
+          if (!editItem) return;
+          document.getElementById("portfolio-type").value = editItem.type || "Project";
+          document.getElementById("portfolio-title").value = editItem.title || "";
+          document.getElementById("portfolio-description").value = editItem.description || "";
+          document.getElementById("portfolio-url").value = editItem.url || "";
+          document.getElementById("portfolio-submit-button").textContent = "Save portfolio item";
+          document.getElementById("portfolio-cancel-edit").hidden = false;
+          document.getElementById("portfolio-title").focus();
+          return;
+        }
+        if (event.target.closest("#portfolio-cancel-edit")) {
+          editingPortfolioIndex = null;
+          document.getElementById("portfolio-item-form").reset();
+          document.getElementById("portfolio-submit-button").textContent = "Add portfolio item";
+          document.getElementById("portfolio-cancel-edit").hidden = true;
+          return;
+        }
+        var deletePortfolio = event.target.closest("[data-delete-portfolio]");
+        if (deletePortfolio) {
+          var portfolioIndex = Number(deletePortfolio.dataset.deletePortfolio);
+          var portfolioItems = profileData.portfolioItems || [];
+          if (editingPortfolioIndex === portfolioIndex) {
+            editingPortfolioIndex = null;
+            document.getElementById("portfolio-item-form").reset();
+            document.getElementById("portfolio-submit-button").textContent = "Add portfolio item";
+            document.getElementById("portfolio-cancel-edit").hidden = true;
+          }
+          var removedPortfolio = portfolioItems.splice(portfolioIndex, 1)[0];
+          if (removedPortfolio && saveProfile(false)) { renderStats(); showToast("Portfolio item deleted."); }
+          else if (removedPortfolio) { portfolioItems.splice(portfolioIndex, 0, removedPortfolio); }
+          return;
+        }
+        var deletePdf = event.target.closest("[data-delete-pdf]");
+        if (deletePdf) {
+          var pdfIndex = Number(deletePdf.dataset.deletePdf);
+          var removedPdf = uploadedPdfs.splice(pdfIndex, 1)[0];
+          if (removedPdf) {
+            try {
+              localStorage.setItem("msl-pdfs", JSON.stringify(uploadedPdfs));
+              renderStats(); showToast("PDF removed from this browser.");
+            } catch (error) {
+              uploadedPdfs.splice(pdfIndex, 0, removedPdf);
+              console.error("Could not remove uploaded PDF.", error);
+              document.getElementById("pdf-message").textContent = "Could not update browser storage.";
+              document.getElementById("pdf-message").classList.add("error");
+            }
+          }
+          return;
+        }
       });
       document.querySelector(".modal-close").addEventListener("click", closeModal);
       modal.addEventListener("click", function (event) { if (event.target === modal) closeModal(); });
@@ -855,9 +1253,11 @@
       document.getElementById("modal-bookmark").addEventListener("click", function () {
         if (!state.activeNote) return;
         var id = state.activeNote.id;
-        if (isSaved(id)) savedIds.delete(id); else savedIds.add(id);
+        var wasSaved = isSaved(id);
+        if (wasSaved) savedIds.delete(id); else savedIds.add(id);
         saveSaved(); renderAll();
         document.getElementById("modal-bookmark").textContent = isSaved(id) ? (books.some(function (item) { return item.id === id; }) ? "★ Bookmarked" : "★ Bookmarked") : (books.some(function (item) { return item.id === id; }) ? "☆ Bookmark book" : "☆ Bookmark note");
+        recordActivity((wasSaved ? "Removed bookmark: " : "Bookmarked: ") + state.activeNote.title, "bookmark");
       });
       document.addEventListener("keydown", function (event) {
         if (event.key === "Escape") closeModal();
@@ -878,29 +1278,41 @@
       var profileForm = document.getElementById("profile-form");
       profileForm.addEventListener("input", function () {
         updateProfilePreview();
-        scheduleProfileSave();
       });
       profileForm.addEventListener("change", function () {
         updateProfilePreview();
-        scheduleProfileSave();
       });
+      document.getElementById("edit-profile-button").addEventListener("click", beginProfileEdit);
+      document.getElementById("cancel-profile-edit").addEventListener("click", cancelProfileEdit);
       profileForm.addEventListener("submit", function (event) {
         event.preventDefault();
         var nameInput = document.getElementById("profile-name");
         nameInput.setCustomValidity(nameInput.value.trim() ? "" : "Enter your name.");
         if (!profileForm.reportValidity()) return;
-        window.clearTimeout(profileSaveTimer);
-        saveProfile(true);
+        var saveButton = document.getElementById("save-profile-button");
+        saveButton.disabled = true;
+        saveButton.textContent = "Saving…";
+        var saved = saveProfile(true);
+        saveButton.disabled = false;
+        saveButton.textContent = "Save changes";
+        if (saved) {
+          recordActivity("Updated student profile", "profile");
+          profileEditSnapshot = null;
+          profileForm.hidden = true;
+          document.getElementById("profile-overview-content").hidden = false;
+          document.getElementById("edit-profile-button").hidden = false;
+        }
       });
       document.getElementById("profile-photo-file").addEventListener("change", function (event) {
         var file = event.target.files && event.target.files[0];
-        var message = document.getElementById("profile-message");
+        var message = document.getElementById(profileEditSnapshot ? "profile-message" : "dashboard-message");
+        event.target.value = "";
         if (!file) return;
         if (["image/jpeg","image/png","image/webp"].indexOf(file.type) === -1) {
-          event.target.value = ""; message.textContent = "Choose a JPG, PNG, or WebP image."; message.classList.add("error"); return;
+          message.textContent = "Choose a JPG, PNG, or WebP image."; message.classList.add("error"); return;
         }
         if (file.size > 1024 * 1024) {
-          event.target.value = ""; message.textContent = "Photo must be 1 MB or smaller."; message.classList.add("error"); return;
+          message.textContent = "Photo must be 1 MB or smaller."; message.classList.add("error"); return;
         }
         var reader = new FileReader();
         reader.onload = function () {
@@ -908,11 +1320,172 @@
             message.textContent = "Could not load that photo. Try another image."; message.classList.add("error"); return;
           }
           profilePhotoData = reader.result; updateProfilePreview();
-          message.textContent = "Photo ready. Saving profile…"; message.classList.remove("error");
-          scheduleProfileSave();
+          message.classList.remove("error");
+          if (!profileEditSnapshot) {
+            if (saveProfile(false)) { message.textContent = "Photo saved on this device."; showToast("Profile photo saved on this device."); recordActivity("Changed profile photo", "profile"); }
+          } else message.textContent = "Photo ready. Save or cancel your profile edit.";
         };
         reader.onerror = function () { message.textContent = "Could not read that photo."; message.classList.add("error"); };
         reader.readAsDataURL(file);
+      });
+      document.getElementById("remove-profile-photo").addEventListener("click", function () {
+        profilePhotoData = "";
+        updateProfilePreview();
+        var message = document.getElementById(profileEditSnapshot ? "profile-message" : "dashboard-message");
+        if (!profileEditSnapshot) {
+          if (saveProfile(false)) { message.textContent = "Profile photo removed."; showToast("Profile photo removed."); recordActivity("Removed profile photo", "profile"); }
+        } else message.textContent = "Photo will be removed when you save.";
+      });
+      document.querySelectorAll("[data-profile-tab]").forEach(function (tab) {
+        tab.addEventListener("click", function () {
+          document.querySelectorAll("[data-profile-tab]").forEach(function (item) {
+            var selected = item === tab;
+            item.setAttribute("aria-selected", String(selected));
+            item.tabIndex = selected ? 0 : -1;
+            document.getElementById(item.getAttribute("aria-controls")).hidden = !selected;
+          });
+        });
+        tab.addEventListener("keydown", function (event) {
+          if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+          event.preventDefault();
+          var tabs = Array.from(document.querySelectorAll("[data-profile-tab]"));
+          var current = tabs.indexOf(tab);
+          var next = tabs[(current + (event.key === "ArrowRight" ? 1 : tabs.length - 1)) % tabs.length];
+          next.focus();
+          next.click();
+        });
+      });
+      document.getElementById("show-student-id").addEventListener("change", function () {
+        if (saveProfile(false)) showToast(this.checked ? "College ID is visible on the local card." : "College ID is hidden on the local card.");
+        renderStats();
+      });
+      document.getElementById("privacy-form").addEventListener("submit", function (event) {
+        event.preventDefault();
+        var saved = saveProfile(false);
+        var message = document.getElementById("privacy-message");
+        message.textContent = saved ? "Preferences saved on this device." : "Could not save preferences.";
+        message.classList.toggle("error", !saved);
+      });
+      document.getElementById("portfolio-links-form").addEventListener("submit", function (event) {
+        event.preventDefault();
+        var githubInput = document.getElementById("profile-github");
+        var linkedinInput = document.getElementById("profile-linkedin");
+        [githubInput,linkedinInput].forEach(function (input) {
+          input.setCustomValidity(input.value && !safeExternalUrl(input.value) ? "Enter a valid http or https URL." : "");
+        });
+        if (!githubInput.reportValidity() || !linkedinInput.reportValidity()) return;
+        var message = document.getElementById("portfolio-links-message");
+        if (saveProfile(false)) {
+          message.textContent = "Portfolio links saved on this device.";
+          message.classList.remove("error");
+          recordActivity("Updated portfolio links", "portfolio");
+        } else {
+          message.textContent = "Could not save portfolio links.";
+          message.classList.add("error");
+        }
+      });
+      document.getElementById("portfolio-item-form").addEventListener("submit", function (event) {
+        event.preventDefault();
+        var urlInput = document.getElementById("portfolio-url");
+        urlInput.setCustomValidity(urlInput.value && !safeExternalUrl(urlInput.value) ? "Enter a valid http or https URL." : "");
+        if (!event.currentTarget.reportValidity()) return;
+        var items = profileData.portfolioItems || [];
+        var item = {
+          type:document.getElementById("portfolio-type").value,
+          title:document.getElementById("portfolio-title").value.trim(),
+          description:document.getElementById("portfolio-description").value.trim(),
+          url:urlInput.value.trim()
+        };
+        var previous = editingPortfolioIndex === null ? null : Object.assign({}, items[editingPortfolioIndex]);
+        if (editingPortfolioIndex === null) items.push(item);
+        else items[editingPortfolioIndex] = item;
+        profileData.portfolioItems = items;
+        if (saveProfile(false)) {
+          event.currentTarget.reset();
+          editingPortfolioIndex = null;
+          document.getElementById("portfolio-submit-button").textContent = "Add portfolio item";
+          document.getElementById("portfolio-cancel-edit").hidden = true;
+          showToast(previous ? "Portfolio item updated." : "Portfolio item added.");
+          recordActivity(previous ? "Updated portfolio item: " + item.title : "Added portfolio item: " + item.title, "portfolio");
+        } else {
+          if (previous) items[editingPortfolioIndex] = previous;
+          else items.pop();
+        }
+      });
+      document.getElementById("resume-form").addEventListener("submit", function (event) {
+        event.preventDefault();
+        var input = document.getElementById("resume-input");
+        var file = input.files && input.files[0];
+        var message = document.getElementById("resume-message");
+        message.classList.remove("error");
+        if (!file) { message.textContent = "Choose a PDF or DOCX resume first."; message.classList.add("error"); return; }
+        var validType = file.type === "application/pdf" || file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" || /\.(pdf|docx)$/i.test(file.name);
+        if (!validType) { message.textContent = "Choose a PDF or DOCX file."; message.classList.add("error"); return; }
+        if (file.size > 2 * 1024 * 1024) { message.textContent = "Resume must be 2 MB or smaller."; message.classList.add("error"); return; }
+        var reader = new FileReader();
+        reader.onload = function () {
+          var oldResume = profileData.resume;
+          profileData.resume = { name:file.name, data:reader.result };
+          if (saveProfile(false)) {
+            message.textContent = "Resume saved in this browser.";
+            input.value = "";
+            recordActivity("Uploaded resume", "portfolio");
+          } else profileData.resume = oldResume;
+        };
+        reader.onerror = function () { message.textContent = "Could not read the resume file."; message.classList.add("error"); };
+        reader.readAsDataURL(file);
+      });
+      document.getElementById("remove-resume-button").addEventListener("click", function () {
+        var oldResume = profileData.resume;
+        delete profileData.resume;
+        if (saveProfile(false)) {
+          document.getElementById("resume-message").textContent = "Resume removed.";
+          recordActivity("Removed resume", "portfolio");
+        } else profileData.resume = oldResume;
+      });
+      document.getElementById("pdf-upload-form").addEventListener("submit", function (event) {
+        event.preventDefault();
+        var input = document.getElementById("pdf-upload-input");
+        var files = Array.from(input.files || []);
+        var message = document.getElementById("pdf-message");
+        message.classList.remove("error");
+        if (!files.length) { message.textContent = "Choose at least one PDF file."; message.classList.add("error"); return; }
+        var invalid = files.find(function (file) { return !/\.pdf$/i.test(file.name) || (file.type && file.type !== "application/pdf") || file.size > 1024 * 1024; });
+        if (invalid) {
+          message.textContent = !/\.pdf$/i.test(invalid.name) || (invalid.type && invalid.type !== "application/pdf") ? "Only PDF files are allowed." : "Each PDF must be 1 MB or smaller.";
+          message.classList.add("error");
+          return;
+        }
+        Promise.all(files.map(function (file) {
+          return new Promise(function (resolve, reject) {
+            var reader = new FileReader();
+            reader.onload = function () {
+              if (typeof reader.result !== "string" || reader.result.indexOf("data:application/pdf;base64,") !== 0) reject(new Error("Could not read " + file.name + "."));
+              else resolve({ name:file.name, data:reader.result });
+            };
+            reader.onerror = function () { reject(new Error("Could not read " + file.name + ".")); };
+            reader.readAsDataURL(file);
+          });
+        })).then(function (newPdfs) {
+          var previous = uploadedPdfs.slice();
+          uploadedPdfs = uploadedPdfs.concat(newPdfs);
+          try {
+            localStorage.setItem("msl-pdfs", JSON.stringify(uploadedPdfs));
+            input.value = "";
+            message.textContent = newPdfs.length + (newPdfs.length === 1 ? " PDF saved in this browser." : " PDFs saved in this browser.");
+            renderStats();
+            recordActivity("Uploaded " + newPdfs.length + (newPdfs.length === 1 ? " PDF" : " PDFs"), "library");
+          } catch (error) {
+            uploadedPdfs = previous;
+            console.error("Could not save uploaded PDFs.", error);
+            message.textContent = "Could not save PDFs. Browser storage may be full.";
+            message.classList.add("error");
+          }
+        }).catch(function (error) {
+          console.error("Could not read uploaded PDF.", error);
+          message.textContent = error.message || "Could not read the selected PDFs.";
+          message.classList.add("error");
+        });
       });
     })();
   </script>

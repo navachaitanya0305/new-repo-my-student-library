@@ -565,6 +565,7 @@
       var savedGrid = document.getElementById("saved-grid");
       var modal = document.getElementById("note-modal");
       var profilePhotoData = "";
+      var profileSaveTimer;
       var systemTheme = window.matchMedia("(prefers-color-scheme: dark)");
       var themePreference = "system";
       var toastTimer;
@@ -706,7 +707,13 @@
       }
       function loadProfile() {
         try {
-          var profile = JSON.parse(localStorage.getItem("msl-profile") || "null");
+          var stored = localStorage.getItem("msl-profile");
+          var legacy = false;
+          if (!stored) {
+            stored = localStorage.getItem("ds-portal-profile");
+            legacy = Boolean(stored);
+          }
+          var profile = JSON.parse(stored || "null");
           if (profile && typeof profile === "object") {
             document.getElementById("profile-name").value = typeof profile.name === "string" ? profile.name : "";
             document.getElementById("profile-id").value = typeof profile.studentId === "string" ? profile.studentId : "";
@@ -714,9 +721,52 @@
             document.getElementById("profile-program").value = typeof profile.program === "string" ? profile.program : "";
             if (typeof profile.year === "string") document.getElementById("profile-year").value = profile.year;
             profilePhotoData = typeof profile.photo === "string" && profile.photo.indexOf("data:image/") === 0 ? profile.photo : "";
+            if (legacy) {
+              localStorage.setItem("msl-profile", JSON.stringify({
+                name: profile.name || "",
+                studentId: profile.studentId || "",
+                email: profile.email || "",
+                year: profile.year || "1st year",
+                program: profile.program || "",
+                photo: profile.photo || ""
+              }));
+            }
           }
-        } catch (error) { console.error("Could not load the student profile.", error); }
+        } catch (error) {
+          console.error("Could not load the student profile.", error);
+          var message = document.getElementById("profile-message");
+          message.textContent = "Could not restore your saved profile. Browser storage may be unavailable.";
+          message.classList.add("error");
+        }
         updateProfilePreview();
+      }
+      function saveProfile(showConfirmation) {
+        var profile = {
+          name:document.getElementById("profile-name").value.trim(),
+          studentId:document.getElementById("profile-id").value.trim(),
+          email:document.getElementById("profile-email").value.trim(),
+          year:document.getElementById("profile-year").value,
+          program:document.getElementById("profile-program").value.trim(),
+          photo:profilePhotoData
+        };
+        try {
+          localStorage.setItem("msl-profile", JSON.stringify(profile));
+          var message = document.getElementById("profile-message");
+          message.textContent = showConfirmation ? "Profile saved on this device." : "Changes saved on this device.";
+          message.classList.remove("error");
+          if (showConfirmation) showToast("Your student profile was saved.");
+          return true;
+        } catch (error) {
+          console.error("Could not save the student profile.", error);
+          var message = document.getElementById("profile-message");
+          message.textContent = "Could not save your profile. Browser storage may be full or unavailable.";
+          message.classList.add("error");
+          return false;
+        }
+      }
+      function scheduleProfileSave() {
+        window.clearTimeout(profileSaveTimer);
+        profileSaveTimer = window.setTimeout(function () { saveProfile(false); }, 500);
       }
       function openNote(id) {
         var resource = resources.find(function (item) { return item.id === id; });
@@ -826,31 +876,21 @@
       });
 
       var profileForm = document.getElementById("profile-form");
-      profileForm.addEventListener("input", updateProfilePreview);
-      profileForm.addEventListener("change", updateProfilePreview);
+      profileForm.addEventListener("input", function () {
+        updateProfilePreview();
+        scheduleProfileSave();
+      });
+      profileForm.addEventListener("change", function () {
+        updateProfilePreview();
+        scheduleProfileSave();
+      });
       profileForm.addEventListener("submit", function (event) {
         event.preventDefault();
         var nameInput = document.getElementById("profile-name");
         nameInput.setCustomValidity(nameInput.value.trim() ? "" : "Enter your name.");
         if (!profileForm.reportValidity()) return;
-        var profile = {
-          name:nameInput.value.trim(),
-          studentId:document.getElementById("profile-id").value.trim(),
-          email:document.getElementById("profile-email").value.trim(),
-          year:document.getElementById("profile-year").value,
-          program:document.getElementById("profile-program").value.trim(),
-          photo:profilePhotoData
-        };
-        try {
-          localStorage.setItem("msl-profile", JSON.stringify(profile));
-          document.getElementById("profile-message").textContent = "Profile saved on this device.";
-          document.getElementById("profile-message").classList.remove("error");
-          showToast("Your student profile was saved.");
-        } catch (error) {
-          console.error("Could not save the student profile.", error);
-          document.getElementById("profile-message").textContent = "Could not save your profile. Try a smaller photo.";
-          document.getElementById("profile-message").classList.add("error");
-        }
+        window.clearTimeout(profileSaveTimer);
+        saveProfile(true);
       });
       document.getElementById("profile-photo-file").addEventListener("change", function (event) {
         var file = event.target.files && event.target.files[0];
@@ -868,7 +908,8 @@
             message.textContent = "Could not load that photo. Try another image."; message.classList.add("error"); return;
           }
           profilePhotoData = reader.result; updateProfilePreview();
-          message.textContent = "Photo ready. Save your profile to keep it."; message.classList.remove("error");
+          message.textContent = "Photo ready. Saving profile…"; message.classList.remove("error");
+          scheduleProfileSave();
         };
         reader.onerror = function () { message.textContent = "Could not read that photo."; message.classList.add("error"); };
         reader.readAsDataURL(file);

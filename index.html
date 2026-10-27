@@ -1314,6 +1314,8 @@
         if (file.size > 1024 * 1024) {
           message.textContent = "Photo must be 1 MB or smaller."; message.classList.add("error"); return;
         }
+        message.textContent = "Reading photo…";
+        message.classList.remove("error");
         var reader = new FileReader();
         reader.onload = function () {
           if (typeof reader.result !== "string" || reader.result.indexOf("data:image/") !== 0) {
@@ -1422,6 +1424,9 @@
         var validType = file.type === "application/pdf" || file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" || /\.(pdf|docx)$/i.test(file.name);
         if (!validType) { message.textContent = "Choose a PDF or DOCX file."; message.classList.add("error"); return; }
         if (file.size > 2 * 1024 * 1024) { message.textContent = "Resume must be 2 MB or smaller."; message.classList.add("error"); return; }
+        var submitButton = event.currentTarget.querySelector('button[type="submit"]');
+        submitButton.disabled = true;
+        submitButton.textContent = "Reading resume…";
         var reader = new FileReader();
         reader.onload = function () {
           var oldResume = profileData.resume;
@@ -1430,9 +1435,20 @@
             message.textContent = "Resume saved in this browser.";
             input.value = "";
             recordActivity("Uploaded resume", "portfolio");
-          } else profileData.resume = oldResume;
+          } else {
+            profileData.resume = oldResume;
+            message.textContent = "Could not save the resume. Browser storage may be full.";
+            message.classList.add("error");
+          }
+          submitButton.disabled = false;
+          submitButton.textContent = "Upload resume";
         };
-        reader.onerror = function () { message.textContent = "Could not read the resume file."; message.classList.add("error"); };
+        reader.onerror = function () {
+          message.textContent = "Could not read the resume file.";
+          message.classList.add("error");
+          submitButton.disabled = false;
+          submitButton.textContent = "Upload resume";
+        };
         reader.readAsDataURL(file);
       });
       document.getElementById("remove-resume-button").addEventListener("click", function () {
@@ -1456,6 +1472,10 @@
           message.classList.add("error");
           return;
         }
+        var submitButton = event.currentTarget.querySelector('button[type="submit"]');
+        submitButton.disabled = true;
+        submitButton.textContent = "Reading PDFs…";
+        message.textContent = "Reading selected PDFs…";
         Promise.all(files.map(function (file) {
           return new Promise(function (resolve, reject) {
             var reader = new FileReader();
@@ -1485,6 +1505,9 @@
           console.error("Could not read uploaded PDF.", error);
           message.textContent = error.message || "Could not read the selected PDFs.";
           message.classList.add("error");
+        }).then(function () {
+          submitButton.disabled = false;
+          submitButton.textContent = "Add PDFs";
         });
       });
     })();
